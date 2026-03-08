@@ -1,6 +1,7 @@
 import os
 from groq import Groq
 from config import LLM_MODEL
+from config import GROQ_API_KEY
 from dotenv import load_dotenv
 
 load_dotenv()

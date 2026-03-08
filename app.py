@@ -8,6 +8,11 @@ from vector_store.chroma_store import ChromaStore
 from retrieval.retriever import Retriever
 from generation.generator import Generator
 
+from config import GROQ_API_KEY
+
+if not GROQ_API_KEY:
+    st.error("GROQ API key is missing! Check .env or Streamlit secrets.")
+
 UPLOAD_DIR = "data/documents"
 
 st.title("Knowledge Aware Agent")

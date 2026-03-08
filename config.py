@@ -1,12 +1,15 @@
-CHROMA_DB_PATH = "data/chroma_db"
+# config.py
+import os
+import streamlit as st
 
-DOCUMENT_PATH = "data/documents"
+try:
+    # First, try Streamlit Cloud secrets
+    GROQ_API_KEY = st.secrets["GROQ"]["API_KEY"]
+except (KeyError, RuntimeError):
+    # Fallback for local development using .env
+    from dotenv import load_dotenv
+    load_dotenv()
+    GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
-EMBEDDING_MODEL = "all-MiniLM-L6-v2"
-
-CHUNK_SIZE = 500
-CHUNK_OVERLAP = 100
-
-TOP_K = 3
-
-LLM_MODEL = "llama-3.3-70b-versatile"
+# Optional: other config constants
+ALLOWED_FILE_TYPES = ["txt", "pdf", "docx", "md", "py"]
