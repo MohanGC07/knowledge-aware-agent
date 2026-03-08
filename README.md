@@ -16,7 +16,7 @@
 
 <br/>
 
-[🚀 Live Demo](#-demo) · [📦 Installation](#-installation) · [📖 How It Works](#-how-the-rag-pipeline-works) · [🛠️ Tech Stack](#️-tech-stack)
+[🚀 Live Demo](#-demo)https://knowledge-aware-agent.streamlit.app/ · [📦 Installation](#-installation) · [📖 How It Works](#-how-the-rag-pipeline-works) · [🛠️ Tech Stack](#️-tech-stack)
 
 </div>
 
@@ -41,9 +41,10 @@ This makes it an ideal reference project for engineers who want to understand th
 ❓ Query:  "What methodology did the authors use for evaluation?"
 🤖 Answer: "The authors employed a mixed-methods approach, combining quantitative
             benchmarking across 5 datasets with qualitative expert review panels..."
+https://knowledge-aware-agent.streamlit.app/            
 ```
 
-*(Powered by Llama-3 70B via Groq API — responses in under 2 seconds)*
+*(Powered by llama-3.3-70b-versatile via Groq API — responses in under 2 seconds)*
 
 ---
 
@@ -57,7 +58,7 @@ This makes it an ideal reference project for engineers who want to understand th
 | 🗄️ **Vector Storage** | Persistent ChromaDB for efficient retrieval |
 | 🔍 **Similarity Search** | Top-K cosine similarity retrieval |
 | 💬 **Context-Grounded Answers** | Retrieved chunks injected into LLM prompts |
-| ⚡ **Fast Inference** | Groq API with Llama-3 70B for sub-second responses |
+| ⚡ **Fast Inference** | Groq API with llama-3.3-70b-versatile for sub-second responses |
 | 🖥️ **Clean UI** | Streamlit-based drag-and-drop interface |
 
 ---
@@ -121,7 +122,7 @@ The system is composed of two primary pipelines:
 | Layer | Technology | Purpose |
 |-------|-----------|---------|
 | **Frontend** | [Streamlit](https://streamlit.io) | File upload UI & chat interface |
-| **Embeddings** | [Sentence Transformers](https://www.sbert.net/) `all-MiniLM-L6-v2` | Semantic vector generation |
+| **Embeddings** | [Sentence Transformers](https://www.sbert.net/) `llama-3.3-70b-versatile` | Semantic vector generation |
 | **Vector DB** | [ChromaDB](https://www.trychroma.com/) | Persistent embedding storage & retrieval |
 | **LLM Inference** | [Groq API](https://groq.com/) | Ultra-fast LLM inference |
 | **LLM Model** | `llama3-70b-8192` | Answer generation |
@@ -175,7 +176,7 @@ knowledge-aware-agent/
 
 **1. Clone the repository**
 ```bash
-git clone https://github.com/your-username/knowledge-aware-agent.git
+git clone https://github.com/MohanGC07/knowledge-aware-agent.git
 cd knowledge-aware-agent
 ```
 
