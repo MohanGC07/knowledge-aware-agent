@@ -9,7 +9,7 @@ venv
 .env
 
 # Streamlit
-.streamlit/
+.streamlit/secrets.toml
 
 # Vector Database
 data/chroma_db/

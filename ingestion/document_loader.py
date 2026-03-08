@@ -1,55 +1,67 @@
-import os
+import logging
+from pathlib import Path
 from pypdf import PdfReader
 import docx
 
+logger = logging.getLogger(__name__)
+
+_TEXT_EXTENSIONS = {"txt", "md", "py", "json", "csv"}
 
 class DocumentLoader:
 
-    def load_file(self, file_path):
+    def load_file(self, file_path: str) -> str:
+        path = Path(file_path)
+        extension = path.suffix.lstrip(".").lower()
 
-        extension = file_path.split(".")[-1].lower()
+        loaders = {
+            "pdf":  self._load_pdf,
+            "docx": self._load_docx,
+        }
 
-        if extension == "pdf":
-            return self.load_pdf(file_path)
+        if extension in loaders:
+            return loaders[extension](path)
 
-        elif extension == "docx":
-            return self.load_docx(file_path)
+        if extension in _TEXT_EXTENSIONS:
+            return self._load_text(path)
 
-        elif extension in ["txt", "md", "py", "json", "csv"]:
-            return self.load_text(file_path)
+        logger.warning("Unsupported file type '%s' — skipping %s", extension, path.name)
+        return ""
 
-        else:
-            return ""
+    def _load_pdf(self, path: Path) -> str:
+        pages: list[str] = []
+        try:
+            reader = PdfReader(str(path))
+            for page_num, page in enumerate(reader.pages, start=1):
+                content = page.extract_text()
+                if content:
+                    pages.append(content)
+                else:
+                    logger.debug("Page %d of '%s' yielded no text.", page_num, path.name)
+        except Exception:
+            logger.exception("Failed to read PDF '%s'.", path.name)
+        return "\n".join(pages)
 
+    def _load_docx(self, path: Path) -> str:
+        paragraphs: list[str] = []
+        try:
+            document = docx.Document(str(path))
+            paragraphs = [
+                para.text
+                for para in document.paragraphs
+                if para.text.strip()
+            ]
+        except Exception:
+            logger.exception("Failed to read DOCX '%s'.", path.name)
+        return "\n".join(paragraphs)
 
-    def load_pdf(self, path):
-
-        reader = PdfReader(path)
-
-        text = ""
-
-        for page in reader.pages:
-            content = page.extract_text()
-
-            if content:
-                text += content
-
-        return text
-
-
-    def load_docx(self, path):
-
-        doc = docx.Document(path)
-
-        text = ""
-
-        for para in doc.paragraphs:
-            text += para.text + "\n"
-
-        return text
-
-
-    def load_text(self, path):
-
-        with open(path, "r", encoding="utf-8") as f:
-            return f.read()
+    def _load_text(self, path: Path) -> str:
+        for encoding in ("utf-8", "latin-1"):
+            try:
+                return path.read_text(encoding=encoding)
+            except UnicodeDecodeError:
+                continue
+            except Exception:
+                logger.exception("Failed to read text file '%s'.", path.name)
+                return ""
+        logger.error("Could not decode '%s' with any supported encoding.", path.name)
+        return ""
