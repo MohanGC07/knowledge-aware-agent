@@ -14,6 +14,7 @@ if not GROQ_API_KEY:
     st.error("GROQ API key is missing! Check .env or Streamlit secrets.")
 
 UPLOAD_DIR = "data/documents"
+os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 st.title("Knowledge Aware Agent")
 
@@ -24,14 +25,10 @@ uploaded_files = st.file_uploader(
 )
 
 if uploaded_files:
-
     for file in uploaded_files:
-
         path = os.path.join(UPLOAD_DIR, file.name)
-
         with open(path, "wb") as f:
             f.write(file.getbuffer())
-
     st.success("Files uploaded successfully!")
 
 if st.button("Process Documents"):
@@ -43,22 +40,16 @@ if st.button("Process Documents"):
 
     all_chunks = []
 
-    for file in os.listdir(UPLOAD_DIR):
-
-        path = os.path.join(UPLOAD_DIR, file)
-
+    for file_name in os.listdir(UPLOAD_DIR):
+        path = os.path.join(UPLOAD_DIR, file_name)
         text = loader.load_file(path)
-
         chunks = chunker.chunk_text([text])
-
         all_chunks.extend(chunks)
 
     embeddings = embedder.embed_documents(all_chunks)
-
     vector_store.add_documents(all_chunks, embeddings)
 
     st.success("Documents processed!")
-
 
 query = st.text_input("Ask a question")
 
@@ -68,9 +59,7 @@ if query:
     generator = Generator()
 
     docs = retriever.retrieve(query)
-
     context = "\n".join(docs)
-
     answer = generator.generate(query, context)
 
     st.write(answer)
