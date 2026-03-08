@@ -18,6 +18,8 @@
 
 [🚀 Live Demo](#-demo) . [📦 Installation](#-installation) · [📖 How It Works](#-how-the-rag-pipeline-works) · [🛠️ Tech Stack](#️-tech-stack)
 
+## Live Demo
+Experience the Knowledge-Aware AI Agent here: [Streamlit App](https://knowledge-aware-agent.streamlit.app)
 </div>
 
 ---
@@ -41,8 +43,7 @@ This makes it an ideal reference project for engineers who want to understand th
 ❓ Query:  "What methodology did the authors use for evaluation?"
 🤖 Answer: "The authors employed a mixed-methods approach, combining quantitative
             benchmarking across 5 datasets with qualitative expert review panels..."
-## Live Demo
-Experience the Knowledge-Aware AI Agent here: [Streamlit App](https://knowledge-aware-agent.streamlit.app)          
+          
 ```
 
 *(Powered by llama-3.3-70b-versatile via Groq API — responses in under 2 seconds)*
